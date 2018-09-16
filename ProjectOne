@@ -8,95 +8,104 @@ using namespace std;
 int main()
 {
     // Set up arrays
-    int k =3;
+    int k =2; //This value sets the digits by a multiple of 4. So k =1 means 4 digit, k=2 means 8 digit... k = 250 means 1000 digit.
     int valFirst[k] = {};
     int valSecond[k] = {};
     int valThird[k] = {};
     srand(time(NULL));
     bool positive = 0, negative = 0;
+    int counter = 0;
 
-    // Populate Arrays
+
+    // Counter is used to decide how many times digits will be incremented
+    while(counter < 10){
+
+        // Populate Arrays
         for(int i = 0; i <k; i++){
-            valFirst[i] = {(rand() * rand() % 99999)};
-            valSecond[i] = {(rand() * rand() % 99999)};
+            valFirst[i] = {(rand() % 9999)}; //generates a random number from 0-9999
+            valSecond[i] = {(rand() % 9999)}; //generates a random number from 0-9999
         }
 
         //Print values a and b
         cout << "Value One:     ";
         for(int n = k-1; n >=0; n--){
-            std::cout << std::setfill ('0') << std::setw(5) << valFirst[n];
+            std::cout << std::setfill ('0') << std::setw(4) << valFirst[n];
         }
         cout << endl;
         cout << "Value Two:     ";
         for(int m = k-1; m >=0; m--){
-            std::cout << std::setfill ('0') << std::setw(5) << valSecond[m];
+            std::cout << std::setfill ('0') << std::setw(4) << valSecond[m];
         }
         cout << endl;
         cout << endl;
 
-    // Check if array is positive
-    int index = k-1;
-    bool finish = 0;
-        while (finish != 1){
-            if(valFirst[index] > valSecond[index]){
-                positive = 1;
-                finish = 1;
-               // cout << "Positive" << endl;
-            }
-            if(valFirst[index] < valSecond[index]){
-                negative = 1;
-                finish=1;
-
-               // cout << "Negative" << endl;
-            }
-            if(valFirst[index] == valSecond[index]){
-            index--;
-               // cout << "  Unknown  ";
-            }
-
-            if(valFirst[0] == valSecond[0] && index <= 0){
-                positive = false;
-                negative = false;
-                finish =1;
-            }
-        }
-
-    //Perform Subtraction
-        if(positive == true){
-            for(int indexTwo = 0; indexTwo < k; indexTwo++){
-                if(valFirst[indexTwo] < valSecond[indexTwo]){
-                    valFirst[indexTwo + 1] = valFirst[indexTwo + 1] -1;
-                    valFirst[indexTwo] = valFirst[indexTwo] + 100000;
+        // Check if array is positive
+        int index = k-1;
+        bool finish = 0;
+            while (finish != 1){
+                if(valFirst[index] > valSecond[index]){
+                    positive = 1;
+                    finish = 1;
+                   // cout << "Positive" << endl;
                 }
-                valThird[indexTwo] = valFirst[indexTwo] - valSecond[indexTwo];
-            }
-        }
-        if (negative == true){
-            for(int indexThree = 0; indexThree < k; indexThree++){
-                if(valFirst[indexThree] > valSecond[indexThree]){
-                    valSecond[indexThree + 1] = valSecond[indexThree + 1] -1;
-                    valSecond[indexThree] = valSecond[indexThree] + 100000;
+                if(valFirst[index] < valSecond[index]){
+                    negative = 1;
+                    finish=1;
+
+                   // cout << "Negative" << endl;
                 }
-                valThird[indexThree] = valSecond[indexThree] - valFirst[indexThree];
+                if(valFirst[index] == valSecond[index]){
+                index--;
+                   // cout << "  Unknown  ";
+                }
 
+                if(valFirst[0] == valSecond[0] && index <= 0){
+                    positive = false;
+                    negative = false;
+                    finish =1;
+                }
             }
-        }
 
-
-        //print final answer
-        cout << "Final Answer: ";
-        if (negative == true){
-           cout << "-";
-        }
-        if (positive == true){
-            cout << " ";
-        }
-        if(positive == true || negative == true){
-            for(int indexFour = k-1; indexFour >=0; indexFour--){
-                std::cout << std::setfill ('0') << std::setw(5) << valThird[indexFour];
+            //Perform Subtraction
+            if(positive == true){
+                for(int indexTwo = 0; indexTwo < k; indexTwo++){
+                    if(valFirst[indexTwo] < valSecond[indexTwo]){
+                        valFirst[indexTwo + 1] = valFirst[indexTwo + 1] -1;
+                        valFirst[indexTwo] = valFirst[indexTwo] + 10000;
+                    }
+                    valThird[indexTwo] = valFirst[indexTwo] - valSecond[indexTwo];
+                }
             }
-        }
+            if (negative == true){
+                for(int indexThree = 0; indexThree < k; indexThree++){
+                    if(valFirst[indexThree] > valSecond[indexThree]){
+                        valSecond[indexThree + 1] = valSecond[indexThree + 1] -1;
+                        valSecond[indexThree] = valSecond[indexThree] + 10000;
+                    }
+                    valThird[indexThree] = valSecond[indexThree] - valFirst[indexThree];
 
+                }
+            }
+
+
+            //print final answer
+            cout << "Final Answer: ";
+            if (negative == true){
+               cout << "-";
+            }
+            if (positive == true){
+                cout << " ";
+            }
+            if(positive == true || negative == true){
+                for(int indexFour = k-1; indexFour >=0; indexFour--){
+                    std::cout << std::setfill ('0') << std::setw(4) << valThird[indexFour];
+                }
+            }
+            cout << endl << endl; // Added for easier readability, becomes less valuable as digits increase
+
+        // Increment counter
+        counter++;
+        }
     return 0;
 }
 
